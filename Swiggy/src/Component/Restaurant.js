@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import RestCard from "./RestCard";
 import SimmerRest from "./SimmerRest";
 
-export default function Resturent() {
+export default function Restaurant() {
 
     const [restData, setrestData] = useState([]);
 

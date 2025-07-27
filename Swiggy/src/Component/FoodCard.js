@@ -1,8 +1,6 @@
 
 export default function FoodCard({foodData}){
 
-    console.log("Helloworld")
-
     console.log(foodData.imageID)
 
     return (

@@ -1,8 +1,10 @@
+import { Link } from "react-router";
 
 export default function RestCard({ data }) {
 
     return (
         <>
+        <Link to={"/city/delhi/"+data.info.id}>
             <div className="w-[286] h-[294.12] rounded-2xl transform transition duration-100 hover:scale-95">
                 {/* <div className="relative">
 
@@ -70,6 +72,7 @@ export default function RestCard({ data }) {
                 <div className="px-2.5 text-gray-500 font-bold whitespace-nowrap overflow-x-hidden text-ellipsis ">{data.info.areaName}</div>
 
             </div>
+        </Link>
         </>
     )
 }
