@@ -1,34 +1,44 @@
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, incrementItem, decrementItem } from "../Stored/Slice";
 
 export default function RestaurantCategoryItems({ data }) {
+
+    // const [count, setCount] = useState(0);
+    const dispatch = useDispatch();
+
+    const items = useSelector(state => state.Slice1.item);
+
+    const element = items.find(item => item.id === data?.card?.info?.id);
+
+    const count = element ? element.quantity : 0;
+
+    function addFood(){
+        dispatch(addItem(data?.card?.info));
+    }
+
+    function incrementFood(){
+        dispatch(incrementItem(data?.card?.info));
+    }
+
+    function decrementFood(){
+        dispatch(decrementItem(data?.card?.info));
+    }
 
 
     const rating = parseFloat(data?.card?.info?.ratings?.aggregatedRating?.rating);
 
     let ratingColor = "text-white";
-    if(rating >= 4.0) ratingColor = "text-green-700";
-    else if(rating >= 3.0) ratingColor = "text-green-500";
-    else if(rating >= 2.0) ratingColor = "text-yellow-500";
-    else if(rating >= 0) ratingColor = "text-red-500";
+    if (rating >= 4.0) ratingColor = "text-green-700";
+    else if (rating >= 3.0) ratingColor = "text-green-500";
+    else if (rating >= 2.0) ratingColor = "text-yellow-500";
+    else if (rating >= 0) ratingColor = "text-red-500";
 
-    let svgColor = "#ffffff"; 
-    if (rating >= 4.0) svgColor = "#15803d";      
-    else if (rating >= 3.0) svgColor = "#22c55e"; 
-    else if (rating >= 2.0) svgColor = "#eab308"; 
-    else if (rating >= 0) svgColor = "#ef4444";   
-
-
-    // const rating = parseFloat(data?.card?.info?.ratings?.aggregatedRating?.rating ?? "-1");
-
-    // // Function to get colors based on rating
-    // const getColorByRating = (rating) => {
-    //     if (rating >= 4.0) return { text: "text-green-700", hex: "#15803d" };
-    //     else if (rating >= 3.0) return { text: "text-green-500", hex: "#22c55e" };
-    //     else if (rating >= 2.0) return { text: "text-yellow-500", hex: "#eab308" };
-    //     else if (rating >= 0) return { text: "text-red-500", hex: "#ef4444" };
-    //     return { text: "text-white", hex: "#ffffff" };
-    // };
-
-    // const { text: ratingColor, hex: svgColor } = getColorByRating(rating);
+    let svgColor = "#ffffff";
+    if (rating >= 4.0) svgColor = "#15803d";
+    else if (rating >= 3.0) svgColor = "#22c55e";
+    else if (rating >= 2.0) svgColor = "#eab308";
+    else if (rating >= 0) svgColor = "#ef4444";
 
     return (
         <>
@@ -85,7 +95,7 @@ export default function RestaurantCategoryItems({ data }) {
 
                         <span className={`pl-2 font-bold ${ratingColor}`}>{rating?.toString()}</span>
                         {data?.card?.info?.ratings?.aggregatedRating?.ratingCountV2 && (
-                            <span className="">{"(" + (data?.card?.info?.ratings?.aggregatedRating?.ratingCountV2 ?? "")+")"  }</span>
+                            <span className="">{"(" + (data?.card?.info?.ratings?.aggregatedRating?.ratingCountV2 ?? "") + ")"}</span>
                         )}
                     </div>
 
@@ -106,11 +116,18 @@ export default function RestaurantCategoryItems({ data }) {
                         src={"https://media-assets.swiggy.com/swiggy/image/upload/" + data?.card?.info?.imageId}
                         alt="Food Image"
                     />
-                    <button
-                        className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rounded-xl text-base text-green-600 px-6 py-2 shadow-lg border border-gray-200 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 font-bold"
-                    >
-                        ADD
-                    </button>
+                    {
+                        (count === 0) ? (<button
+                            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-30 h-12 translate-y-1/2 rounded-xl text-[22px] text-green-600 px-6  shadow-lg border border-gray-200 bg-white hover:bg-gray-50 font-bold" onClick={addFood}
+                        >
+                            ADD
+                        </button>) : (<div className="flex justify-between items-center absolute bottom-0 left-1/2 -translate-x-1/2  h-12 translate-y-1/2 rounded-xl text-[22px] text-green-600 shadow-lg border border-gray-200 bg-white hover:bg-gray-50 font-bold">
+                            <button className="w-10" onClick={decrementFood}>-</button>
+                            <span className="w-10 text-center">{count}</span>
+                            <button className="w-10" onClick={incrementFood}>+</button>
+                        </div>)
+                    }
+
                 </div>
             </div>
         </>
